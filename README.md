@@ -1,24 +1,29 @@
-# README
+projeto + Dockerfile
+git
+-------------------------------------------------------
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+docker-stack.yml
+git
 
-Things you may want to cover:
+docker build -t alanlab/cluster_app:1.0 .
 
-* Ruby version
+docker login
 
-* System dependencies
+docker push alanlab/cluster_app:1.0
 
-* Configuration
+criar nodes
 
-* Database creation
+rodar em um node:
 
-* Database initialization
+docker swarm init --advertise-addr “ip_da_instância”
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+adicionar workers em outros nodes com retorno do comando acima
 
-* Deployment instructions
+adicionar manager em outros nodes com retorno do camando: docker swarm join-token manager
 
-* ...
+clonar git do docker-stack.yml em um node manager
+
+rodar neste mesmo node manager:
+
+docker stack deploy -c docker-stack.yml labSwarm
