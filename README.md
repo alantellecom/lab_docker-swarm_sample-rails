@@ -1,29 +1,37 @@
-projeto + Dockerfile
-git
--------------------------------------------------------
+* projeto + Dockerfile (git)
 
-docker-stack.yml
-git
+Se alterar projeto:
 
 docker build -t alanlab/cluster_app:1.0 .
 
 docker login
 
 docker push alanlab/cluster_app:1.0
+-------------------------------------------------------
 
-criar nodes
+* docker-compose.yml (git)
 
-rodar em um node:
+Se imagem do projeto sofreu upgrade de versão, alterar image do docker-compose com nova versão
+---------------------------------------------------------
 
-docker swarm init --advertise-addr “ip_da_instância”
+* docker swarm
+
+Criar nodes a partir de instâncias:
+
+1- Manager primário -> rodar em uma instância: docker swarm init --advertise-addr “ip_da_instância”
+
+2- Adicionar workers em outros nodes com retorno do comando acima
+
+3- Adicionar managers secundários em outras instância -> Com retorno do camando "docker swarm join-token manager" executado a partir de um manager, copiar e executar em outra instância.
+
+Iniciar serviços:
+
+1- clonar git do docker-stack.yml em um node manager
+
+2- rodar neste mesmo node manager: docker stack deploy -c docker-compose.yml labSwarm
+
+3 - esclar com o comando: docker service scale <nome_serviço>=<numero_vezes>  exe: docker service scale myservice_web=3
 
 
-adicionar workers em outros nodes com retorno do comando acima
 
-adicionar manager em outros nodes com retorno do camando: docker swarm join-token manager
 
-clonar git do docker-stack.yml em um node manager
-
-rodar neste mesmo node manager:
-
-docker stack deploy -c docker-stack.yml labSwarm
